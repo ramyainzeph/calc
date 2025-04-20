@@ -1,72 +1,94 @@
 package main
 
 import (
-	// "bufio"
+	"bufio"
 	"fmt"
-	// "os"
+	"os"
+	"strconv"
+
 	// "strconv"
-	// "strings"
+	"strings"
 )
 
-func main() {
-	var num1, num2 float64
-	var operator string
-
-	fmt.Println("Enter the first number:")
-	fmt.Scanln(&num1)
-
-	fmt.Println("Enter the second number:")
-	fmt.Scanln(&num2)
-
-	fmt.Println("Enter the operator(+,-,*,/):")
-	fmt.Scanln(&operator)
-
-	if operator == "+"{
-		fmt.Println("Result:",num1+num2)
-	}else if operator == "-"{
-		fmt.Println("Result:",num1-num2)
-	}else if operator == "*"{
-		fmt.Println("Result:",num1*num2)
-	}else if operator == "/"{
-		if num2 != 0{
-			fmt.Println("Result:",num1/num2)
-		}else{
-			fmt.Println("Error:Cannot divide by Zero")
-		}
-	}else{
-		fmt.Println("Invalid operator")
-	}
-}
+var todo []string
 
 // func main() {
-// 	reader := bufio.NewReader(os.Stdin)
+// 	var todo []string
 
-// 	fmt.Print("Enter the first number: ")
-// 	input1, _ := reader.ReadString('\n')
-// 	num1, _ := strconv.ParseFloat(strings.TrimSpace(input1), 64)
+// 	for {
+// 		fmt.Println("\n---- To-Do List Menu ----")
+// 		fmt.Println("1. Add Task")
+// 		fmt.Println("2. View Tasks")
+// 		fmt.Println("3. Exit")
+// 		fmt.Print("Enter your choice (1/2/3): ")
 
-// 	fmt.Print("Enter the second number: ")
-// 	input2, _ := reader.ReadString('\n')
-// 	num2, _ := strconv.ParseFloat(strings.TrimSpace(input2), 64)
+// 		var choice int
+// 		fmt.Scanln(&choice)
 
-// 	fmt.Print("Enter operator (+, -, *, /): ")
-// 	operator, _ := reader.ReadString('\n')
-// 	operator = strings.TrimSpace(operator)
+// 		if choice == 1 {
+// 			fmt.Print("Enter your task: ")
+// 			var task string
+// 			fmt.Scanln(&task)
 
-// 	switch operator {
-// 	case "+":
-// 		fmt.Printf("Result: %.2f\n", num1+num2)
-// 	case "-":
-// 		fmt.Printf("Result: %.2f\n", num1-num2)
-// 	case "*":
-// 		fmt.Printf("Result: %.2f\n", num1*num2)
-// 	case "/":
-// 		if num2 != 0 {
-// 			fmt.Printf("Result: %.2f\n", num1/num2)
+// 			todo = append(todo, task)
+// 			fmt.Println("Task Added")
+// 		} else if choice == 2 {
+// 			if len(todo) == 0 {
+// 				fmt.Println("No Task Yet")
+// 			} else {
+// 				fmt.Println("Your Task List")
+// 				for i, task := range todo {
+// 					fmt.Printf("%d. %s\n", i+1, task)
+// 				}
+// 			}
+// 		} else if choice == 3 {
+// 			fmt.Println("GoodBye")
+// 			break
 // 		} else {
-// 			fmt.Println("Error: Division by zero")
+// 			fmt.Println("Invalid choice, please try again.")
 // 		}
-// 	default:
-// 		fmt.Println("Invalid operator")
 // 	}
 // }
+
+func main() {
+	reader := bufio.NewReader(os.Stdin)
+
+	for {
+		fmt.Println("\n1. Add Task")
+		fmt.Println("2. View Tasks")
+		fmt.Println("3.Delete Task")
+		fmt.Println("4.Exit")
+		fmt.Println("Select your option :")
+
+		input, _ := reader.ReadString('\n')
+		choice := strings.TrimSpace(input)
+
+		switch choice {
+		case "1":
+			fmt.Print("Enter your task:")
+			task, _ := reader.ReadString('\n')
+			todo = append(todo, strings.TrimSpace(task))
+			fmt.Println("Task Added")
+		case "2":
+			fmt.Println("\n Your Task List")
+			for i, task := range todo {
+				fmt.Printf("%d. %s\n", i+1, task)
+			}
+		case "3":
+			fmt.Println("Enter the task number to delete:")
+			numInput, _ := reader.ReadString('\n')
+			index, err := strconv.Atoi(strings.TrimSpace(numInput))
+			if err != nil || index < 1 || index > len(todo) {
+				fmt.Println("Invalid task number")
+			} else {
+				todo = append(todo[:index-1], todo[index:]...)
+				fmt.Println("Task Deleted")
+			}
+		case "4":
+			fmt.Println("Goodbye")
+			return
+		default:
+			fmt.Println("Invalid choice, please try again.")
+		}
+	}
+}
